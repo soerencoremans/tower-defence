@@ -1,0 +1,64 @@
+name: Auftrag
+description: What should change and why. Readable by anyone, no technical details.
+title: "[Auftrag] "
+labels: ["auftrag"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        An Auftrag carries intent, not instructions. Write it so that someone without a
+        technical background understands what the result should do and why.
+        The Auftrag's ID is this issue's number. Approval is moving it from **Backlog** to **Ready**.
+
+  - type: input
+    id: repository
+    attributes:
+      label: Repository
+      description: Local path of the repository on the executing machine. The remote is derived from it.
+      placeholder: ~/projects/monorepo-fastnd
+    validations:
+      required: true
+
+  - type: input
+    id: blocked-by
+    attributes:
+      label: Blocked by
+      description: Other Aufträge that must be Done before this one may start. Issue references, comma separated. Leave empty if none.
+      placeholder: "#12, #15"
+
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Behavioural requirements
+      description: Plain text. One requirement per bullet. What the result should do, from the user's side of the screen.
+      placeholder: |
+        - A tenant admin can export the current product list as CSV.
+        - The export contains only products the admin is allowed to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+      description: Why each requirement exists. This is what the Eskalator and the human fall back on when a trade-off has to be made.
+      placeholder: |
+        - Sales needs the list in spreadsheets for quarterly planning.
+        - Visibility rules must hold in exports as they do in the UI.
+    validations:
+      required: true
+
+  - type: textarea
+    id: mocks
+    attributes:
+      label: Mocks
+      description: Required when the Auftrag substantially changes or adds frontend pages. Drag images in here.
+      placeholder: Attach images of how you imagine the pages after the Auftrag is done.
+
+  - type: checkboxes
+    id: no-tech
+    attributes:
+      label: No technical details
+      options:
+        - label: This Auftrag names no files, libraries, tables or architecture. That is the Gremium's job.
+          required: true

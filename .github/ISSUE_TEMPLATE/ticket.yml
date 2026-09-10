@@ -1,0 +1,79 @@
+name: Ticket
+description: One unit of work for the Dev-Loop. Belongs to an Auftrag as a sub-issue.
+title: "[Ticket] "
+labels: ["ticket"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A ticket carries instructions, not intent. The ticket's ID is this issue's number.
+        After creating it, add it as a **sub-issue** of its Auftrag. That link is how the
+        input script finds it. Tickets are executable from **Backlog** and **Ready**; approval
+        happens on the Auftrag, not on the ticket.
+
+  - type: input
+    id: base-worktree
+    attributes:
+      label: Base worktree
+      description: The Auftrag branch this ticket forks from. Leave empty for the default `auftrag/<Auftrag number>`.
+      placeholder: auftrag/12
+
+  - type: input
+    id: operating-worktree
+    attributes:
+      label: Operating worktree
+      description: The ticket's own branch. Leave empty for the default `ticket/<ticket number>`.
+      placeholder: ticket/17
+
+  - type: input
+    id: blocked-by
+    attributes:
+      label: Blocked by
+      description: Tickets that must be Done before this one may start. Issue references, comma separated. Leave empty if none.
+      placeholder: "#16"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What this ticket delivers, in the language of the Auftrag.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Gherkin scenarios this ticket serves. QA checks these on the merged result.
+      render: gherkin
+      placeholder: |
+        Scenario: Export respects visibility
+          Given a tenant admin who may see products A and B but not C
+          When they export the product list
+          Then the CSV contains A and B
+          And the CSV does not contain C
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-specification
+    attributes:
+      label: Test specification
+      description: Tests to write before the implementation, as behaviour, not as code. Name the module boundaries that are Test Doubles. Everything else stays real (Chicago School).
+      placeholder: |
+        Unit:
+        - ExportService.buildCsv returns only rows the given permission set allows.
+        - ExportService.buildCsv escapes commas and quotes in product names.
+        Boundaries doubled: PrismaService (Test Double), everything else real.
+        e2e:
+        - Scenario "Export respects visibility" as a Playwright spec.
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-details
+    attributes:
+      label: Implementation details
+      description: Modules, interfaces, data changes. Concrete enough that the developer agent does not have to guess.
+    validations:
+      required: true
